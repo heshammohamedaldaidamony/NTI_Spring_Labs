@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: Lab1_Task_Tracker
+  jackson:
+    deserialization:
+      fail-on-null-for-primitives: false
+
+server:
+  port: 8080
+
+tasktracker:
+  max-tasks: 50
+  default-page-size: 10
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics

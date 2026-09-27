@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.nti.lab1_task_tracker.TaskStore;
 import org.nti.lab1_task_tracker.models.Task;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @RequestMapping("/api/tasks")
 public class TaskController {
 
+    private static final Logger log = LoggerFactory.getLogger(TaskController.class);
     private final TaskStore store;
     private final int maxTasks;
     private final int defaultPageSize;
@@ -25,6 +28,7 @@ public class TaskController {
         this.store = store;
         this.maxTasks = maxTasks;
         this.defaultPageSize = defaultPageSize;
+        log.debug("TaskController initialized: maxTasks={}, defaultPageSize={}", maxTasks, defaultPageSize);
     }
 
     //--------------------- Add A Task---------------------
@@ -50,6 +54,8 @@ public class TaskController {
         if (limit !=null && limit > 0) {
             effectiveLimit=limit;;
         }
+        else
+            log.warn("Rejecting list request: invalid limit={}", limit);
 
 //        List<Task> result = new ArrayList<>();
 //        for (Task t : store.findAll()) {
@@ -59,10 +65,15 @@ public class TaskController {
 //                result.add(t);
 //            }
 //
-        return store.findAll().stream()
+
+        List<Task> result = store.findAll().stream()
                 .filter(t -> t.isCompleted() == completed)
                 .limit(effectiveLimit)
                 .toList();
+
+        log.debug("Returning {} tasks", result.size());
+        return result;
+
     }
 
 

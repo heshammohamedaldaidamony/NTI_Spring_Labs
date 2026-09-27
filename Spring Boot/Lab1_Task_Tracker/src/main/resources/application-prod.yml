@@ -1,0 +1,11 @@
+tasktracker:
+  max-tasks: 50
+  default-page-size: 10
+
+logging:
+  level:
+    org.nti.lab1_task_tracker: WARN
+
+spring:
+  devtools:
+    add-properties: true

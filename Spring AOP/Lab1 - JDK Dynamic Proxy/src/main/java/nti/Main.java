@@ -11,7 +11,7 @@ public class Main {
 
         NotificationService proxy = (NotificationService) Proxy.newProxyInstance(
                 NotificationService.class.getClassLoader(),
-                new Class<?>[]{ NotificationService.class },  
+                new Class<?>[]{ NotificationService.class },
                 new LoggingHandler(real)
         );
 

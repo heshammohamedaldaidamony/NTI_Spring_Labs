@@ -1,0 +1,7 @@
+tasktracker:
+  max-tasks: 9
+  default-page-size: 3
+
+logging:
+  level:
+    org.nti.lab1_task_tracker: INFO
