@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-init-method="defaultInit"
+       default-destroy-method="defaultDestroy">
+
+
+    <bean id="defaultLifecycleProbeA" class="nti.config.LegacyBean"/>
+    <bean id="defaultLifecycleProbeB" class="nti.config.LegacyBean"/>
+
+
+    <bean id="lazyLegacyBean" class="nti.config.LegacyBean"
+          init-method="init"
+          destroy-method="destroy"
+          lazy-init="true"/>
+
+    <bean id="aliasProbe" class="nti.config.AppConfig$AliasProbe" autowire="byType"/>
+
+    <bean id="baseEmailTemplate"
+          class="nti.notify.EmailNotifier"
+          abstract="true"/>
+
+    <bean id="primaryXmlEmail"
+          class="nti.notify.EmailNotifier"
+          parent="baseEmailTemplate"
+          primary="true"
+          autowire-candidate="false"/>
+
+    <bean id="secondaryXmlEmail"
+          class="nti.notify.EmailNotifier"
+          parent="baseEmailTemplate"
+          autowire-candidate="false"/>
+
+    <beans profile="prod">
+        <bean id="fileBackedEmployeeRepository"
+              class="nti.repository.FileBackedFactory"
+              factory-method="create"
+              depends-on="fileStoreInitializer">
+            <constructor-arg value="employees.csv"/>
+        </bean>
+    </beans>
+</beans>
