@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="order" value="0"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="order" value="1"/>
+        <property name="mappings">
+            <props>
+                <prop key="/home">homeController</prop>
+                <prop key="/about">aboutController</prop>
+                <prop key="/raw">rawHandler</prop>
+                <prop key="/greet">greetingHandler</prop>
+                <prop key="/plain">plainController</prop>
+                <prop key="/go-home">goHomeController</prop>
+                <prop key="/diagnostics">diagnosticsController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <property name="order" value="2"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+
+    <bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"/>
+
+    <bean class="com.example.four.adapter.GreetingHandlerAdapter"/>
+
+    <bean id="homeController" class="com.example.four.handler.HomeController"/>
+    <bean id="plainController" class="com.example.four.handler.PlainController"/>
+    <bean id="diagnosticsController" class="com.example.four.handler.DiagnosticsController"/>
+
+    <bean name="/legacy" class="com.example.four.handler.LegacyController"/>
+
+    <bean class="com.example.four.handler.AnnotatedController"/>
+
+    <bean id="rawHandler" class="com.example.four.handler.RawHandler"/>
+
+    <bean id="greetingHandler" class="com.example.four.handler.PoliteGreetingHandler"/>
+
+    <bean id="aboutController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName" value="about"/>
+    </bean>
+
+    <bean id="goHomeController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName" value="goHome"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+        <property name="order" value="0"/>
+    </bean>
+
+    <bean name="plainTextView" class="com.example.four.view.PlainTextView"/>
+
+    <bean name="goHome" class="org.springframework.web.servlet.view.RedirectView">
+        <property name="url" value="/home"/>
+        <property name="contextRelative" value="true"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="100"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+</beans>
